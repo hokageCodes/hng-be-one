@@ -13,15 +13,16 @@ exports.sayHello = async (req, res) => {
     clientIp = clientIp.split(',')[0];
   }
   clientIp = clientIp.split(':')[0];
-  console.log(clientIp)
+  console.log(clientIp);
 
   try {
-    // Get location and weather information
+    // Get location information
     const locationResponse = await axios.get(`https://ipinfo.io/${clientIp}?token=${process.env.IP_TOKEN}`);
     const location = locationResponse.data.city;
 
-    const weatherResponse = await axios.get(`https://api.weatherbit.io/v2.0/current?city=${location}&key=${process.env.KEY}`);
-    const temperature = weatherResponse.data.data[0].temp;
+    // Get weather information from OpenWeatherMap
+    const weatherResponse = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${process.env.OPENWEATHER_KEY}&units=metric`);
+    const temperature = weatherResponse.data.main.temp;
 
     // Prepare response
     const response = {
