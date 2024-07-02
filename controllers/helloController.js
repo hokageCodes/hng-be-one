@@ -1,5 +1,5 @@
 const axios = require('axios');
-require("dotenv").config();
+require('dotenv').config();
 
 exports.sayHello = async (req, res) => {
   const visitorName = req.query.visitor_name;
@@ -9,16 +9,12 @@ exports.sayHello = async (req, res) => {
     return res.status(400).json({ msg: 'Visitor\'s name is required' });
   }
 
+  // Get the client's IP address
   let clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   if (clientIp.includes(',')) {
     clientIp = clientIp.split(',')[0];
   }
   clientIp = clientIp.split(':').pop();
-
-  // Use a static IP for testing in production
-  if (process.env.NODE_ENV === 'production') {
-    clientIp = '1.1.1.1';
-  }
 
   console.log(`Client IP: ${clientIp}`);
 
