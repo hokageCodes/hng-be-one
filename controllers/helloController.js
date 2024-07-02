@@ -12,14 +12,14 @@ exports.sayHello = async (req, res) => {
   if (clientIp.includes(',')) {
     clientIp = clientIp.split(',')[0];
   }
-  clientIp = clientIp.split(':')[0];
+  clientIp = clientIp.split(':').pop();
   console.log(`Client IP: ${clientIp}`);
 
   try {
     // Get location information
     const locationResponse = await axios.get(`https://ipinfo.io/${clientIp}?token=${process.env.IP_TOKEN}`);
     console.log('Location response data:', locationResponse.data);
-    const location = locationResponse.data.city;
+    const location = locationResponse.data.city || 'Unknown';
 
     // Get weather information from OpenWeatherMap
     const weatherResponse = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${process.env.OPENWEATHER_KEY}&units=metric`);
