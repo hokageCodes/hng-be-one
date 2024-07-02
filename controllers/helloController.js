@@ -33,7 +33,7 @@ exports.sayHello = async (req, res) => {
 
     res.json(response);
   } catch (error) {
-    console.error(error);
+    console.error('Error details:', error.response ? error.response.data : error.message);
     res.status(500).send('An error occurred while processing your request.');
   }
 };
